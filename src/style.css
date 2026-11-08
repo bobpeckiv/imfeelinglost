@@ -226,3 +226,16 @@ textarea.jtext:focus{outline:2px solid var(--accent);outline-offset:1px}
 
 .prose>h2:first-child{margin-top:0}
 .qgrid .qcard{margin:0 0 16px}
+
+/* ---------- artwork ---------- */
+.card .art{display:block;width:calc(100% + 44px);max-width:none;height:auto;aspect-ratio:16/9;object-fit:cover;margin:-22px -22px 12px;border-radius:var(--r) var(--r) 0 0;background:#14110e}
+a.card:hover .art{filter:brightness(1.12) saturate(1.1)}
+.card .art{transition:filter .3s}
+.banner{display:block;width:100%;height:clamp(160px,26vw,280px);object-fit:cover;border-radius:var(--r);margin-top:22px;background:#14110e}
+.panel.has-art{padding-top:0;overflow:hidden}
+.panel-art{display:block;width:calc(100% + 56px);max-width:none;margin:0 -28px 22px;height:150px;object-fit:cover;background:#14110e}
+.vplay{background-size:cover;background-position:center}
+.vplay::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.45))}
+.vplay svg,.vplay span{position:relative;z-index:1}
+.vplay span{text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.vgrid.one{grid-template-columns:1fr}

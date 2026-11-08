@@ -273,6 +273,7 @@ MYSTIC_PEOPLE = [
  ("Paramahansa Yogananda", "https://en.wikipedia.org/wiki/Paramahansa_Yogananda", "Author of Autobiography of a Yogi"),
  ("Thich Nhat Hanh", "https://en.wikipedia.org/wiki/Thich_Nhat_Hanh", "Mindfulness and engaged Buddhism"),
  ("Ram Dass", "https://en.wikipedia.org/wiki/Ram_Dass", "Teacher of \"Be Here Now\""),
+ ("Neville Goddard", "https://en.wikipedia.org/wiki/Neville_Goddard", "Mystic teacher of imagination and assumption"),
 ]
 
 # ------------------------------------------------------------------ COMMUNITIES

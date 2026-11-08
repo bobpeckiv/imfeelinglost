@@ -6,15 +6,18 @@ import os, re, json, html, shutil
 from urllib.parse import quote_plus
 from content import *
 from content2 import *
+from content3 import *
+import art
 IDEAS = IDEAS + NEW_IDEAS
 PRACTICES = PRACTICES + NEW_PRACTICES
+PRODUCTS = [(n, items + EXTRA_BOOKS) if n == "Books" else (n, items) for n, items in PRODUCTS]
 
 BASE = "https://imfeelinglost.org"
 BUILD = "2026-11-08"
 REVIEWED = "November 2026"
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(os.path.dirname(HERE), "site")
-V = "20261108"
+V = "20261108b"
 BRAND = "I’m Feeling Lost"
 
 IDX = {i["slug"]: i for i in IDEAS}
@@ -146,15 +149,61 @@ def page(path, title, desc, body, section="", jsonld=None, og_type="website",
 </html>
 '''
 
+def art_url(key, seed=None, color=None, style=None, tags=None):
+    path = os.path.join(OUT, "assets", "art", key + ".svg")
+    if not os.path.exists(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(art.svg(seed or key, color or art.color_for(tags, seed or key), style))
+    return "/assets/art/%s.svg?v=%s" % (key, V)
+
+def art_img(key, cls="art", **kw):
+    return '<img class="%s" src="%s" alt="" loading="lazy" width="480" height="270">' % (cls, art_url(key, **kw))
+
+IDEA_STYLES = ["ridges", "waves", "ripples", "bloom"]
+
+def idea_art(i, cls="art"):
+    n = [x["slug"] for x in IDEAS].index(i["slug"])
+    return art_img("idea-" + i["slug"], cls=cls, tags=i["tags"], style=IDEA_STYLES[n % 4])
+
+def practice_art(p, cls="art"):
+    style = "ripples" if p.get("pacer") else ("bloom" if p["minutes"] >= 5 else "waves")
+    return art_img("practice-" + p["slug"], cls=cls, style=style, tags=["calm"] if p.get("pacer") else None)
+
+def vid_card(t, tags=("talk", "video")):
+    key = "v-" + (t.get("id") or t.get("list"))
+    bg = art_url(key, style="waves", color=art.color_for(None, key))
+    data = ('data-id="%s"' % t["id"]) if t.get("id") else ('data-list="%s"' % t["list"])
+    yt = ("https://www.youtube.com/watch?v=%s" % t["id"]) if t.get("id") else ("https://www.youtube.com/playlist?list=%s" % t["list"])
+    meta = esc(t["who"]) + (" \u00b7 %d min" % t["min"] if t.get("min") else "")
+    safety = ('<p class="note small" style="margin:10px 0">%s</p>' % esc(WIM_HOF_SAFETY)) if t.get("safety") else ""
+    label = "Play playlist" if t.get("list") else "Play here"
+    SEARCH.append(dict(title=t["title"], type="Watch", summary=t["who"] + ". " + t["note"], tags=list(tags), text="", url="/watch/"))
+    return f"""
+<article class="vid">
+  <div class="vframe" {data} data-title="{esc(t["title"])}">
+    <button class="vplay" type="button" aria-label="Play {esc(t["title"])}" style="background-image:url('{bg}')">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(0,0,0,.35)" stroke="currentColor" stroke-width="2"/><path d="M26 20l20 12-20 12z" fill="currentColor"/></svg>
+      <span>{label}</span>
+    </button>
+  </div>
+  <div class="vbody">
+    <h3>{esc(t["title"])}</h3>
+    <p class="muted small">{meta}</p>
+    <p>{esc(t["note"])}</p>{safety}
+    <p class="small"><a href="{yt}" target="_blank" rel="noopener">Open on YouTube</a></p>
+  </div>
+</article>"""
+
 def idea_card(i):
-    return ('<a class="card" href="/ideas/%s/" data-f="%s"><span class="kicker">%s</span><h3>%s</h3><p>%s</p>'
+    return ('<a class="card" href="/ideas/%s/" data-f="%s">' + idea_art(i) + '<span class="kicker">%s</span><h3>%s</h3><p>%s</p>'
             '<span class="meta">%d min read</span></a>') % (
         i["slug"], " ".join(re.sub(r"[^a-z0-9]+", "-", t.lower()) for t in i["tags"]),
         esc(i["tags"][0]), esc(i["title"]), esc(i["summary"]), i["read"])
 
 def practice_card(p):
     bucket = "short" if p["minutes"] < 5 else ("mid" if p["minutes"] <= 10 else "long")
-    return ('<a class="card" href="/practice/%s/" data-f="%s"><span class="kicker">%d min</span><h3>%s</h3><p>%s</p>'
+    return ('<a class="card" href="/practice/%s/" data-f="%s">' + practice_art(p) + '<span class="kicker">%d min</span><h3>%s</h3><p>%s</p>'
             '<span class="meta">%s</span></a>') % (
         p["slug"], bucket, p["minutes"], esc(p["title"]), esc(p["summary"]), esc(p["when"]))
 
@@ -195,13 +244,15 @@ def build_home():
 
 <section class="section">
   <div class="wrap two-up">
-    <div class="panel">
+    <div class="panel has-art">
+      {art_img("home-why", cls="panel-art", style="ridges", color="gold")}
       <p class="kicker">Why</p>
       <h2>Live on purpose</h2>
       <p class="muted">Feeds, habits, and moods choose most of our days. Intention is the quiet decision to take some of them back, starting very small.</p>
       <p><a class="btn primary" href="/why/">Read why</a></p>
     </div>
-    <div class="panel">
+    <div class="panel has-art">
+      {art_img("home-for", cls="panel-art", style="ripples", color="dusk")}
       <p class="kicker">For anyone who feels stuck</p>
       <h2>You are not broken</h2>
       <p class="muted">Low mood, endless scrolling, and habits you wish you did not have are common, and they are workable. This library is free, with no account and no ads.</p>
@@ -221,18 +272,27 @@ def build_home():
 
 <section class="section">
   <div class="wrap two-up">
-    <div class="panel">
+    <div class="panel has-art">
+      {art_img("home-mystics", cls="panel-art", style="orbit", color="violet")}
       <p class="kicker">Mystics</p>
       <h2>Words that have lasted</h2>
       <p class="muted">Short passages and free readings from the Buddha, Lao Tzu, the Stoics, and other contemplatives.</p>
       <p><a class="btn" href="/mystics/">Open the mystics page</a></p>
     </div>
-    <div class="panel">
+    <div class="panel has-art">
+      {art_img("home-community", cls="panel-art", style="bloom", color="sage")}
       <p class="kicker">Community</p>
       <h2>You are not the only one</h2>
       <p class="muted">Subreddits like r/getdisciplined and r/nosurf, and other places where people work on the same things.</p>
       <p><a class="btn" href="/community/">Find your people</a></p>
     </div>
+  </div>
+</section>
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head"><div><p class="kicker">Read</p><h2>Writers worth following</h2></div>
+      <a href="/read/#writers">All writers \u2192</a></div>
+    <div class="grid">{"".join(writer_card(w) for w in WRITERS[:3])}</div>
   </div>
 </section>
 <script type="application/json" id="quotes-data">{qjson}</script>
@@ -312,6 +372,7 @@ def build_ideas():
   <h1>{esc(i["title"])}</h1>
   <p class="lede">{esc(i["summary"])}</p>
   <p class="byline">{i["read"]} min read · Reviewed {REVIEWED}</p>
+  {idea_art(i, "banner")}
 </div>
 <div class="wrap layout">
   <aside class="infobox" aria-label="At a glance">
@@ -386,6 +447,7 @@ def build_practice():
   <p class="kicker">Practice · {p["minutes"]} min</p>
   <h1>{esc(p["title"])}</h1>
   <p class="lede">{esc(p["summary"])}</p>
+  {practice_art(p, "banner")}
 </div>
 <div class="wrap narrow prose" style="padding-bottom:64px">
   <p class="note"><b>When to use it.</b> {esc(p["when"])}</p>
@@ -409,7 +471,7 @@ def build_practice():
 
 # ===================================================================== BREATHE
 def build_breathe():
-    body = '''
+    body = f'''
 <div class="wrap narrow page-head center">
   <p class="kicker">Breathe</p>
   <h1>Follow the circle.</h1>
@@ -429,6 +491,10 @@ def build_breathe():
     <button class="chip" type="button" data-m="5" aria-pressed="false">5 min</button>
   </div>
   <p class="center"><button class="btn primary big" id="pstart" type="button">Start</button></p>
+  <hr class="sep">
+  <h2>Breathe along with a guide</h2>
+  <p class="muted">A stronger, energizing practice. Read the safety note before you start.</p>
+  <div class="vgrid one">{vid_card(BREATH_VIDEOS[0], ('breathing',))}</div>
   <p class="note small">If you feel dizzy, tingly, or uncomfortable, stop and breathe normally. If holding your breath feels bad, skip the holds. This is general wellness information, not medical advice, and may not suit everyone, especially people with breathing, heart, or anxiety conditions. Ask a clinician if unsure.</p>
 </div>
 '''
@@ -489,6 +555,7 @@ def build_meditate():
   <section aria-labelledby="l-h">
     <h2 id="l-h">Listen to a guide</h2>
     <p class="muted">Free recordings from trusted sources.</p>
+    <div class="vgrid one" style="margin-bottom:16px">{"".join(vid_card(v, ("meditation",)) for v in MEDITATION_VIDEOS)}</div>
     <ul class="reslist">{links}</ul>
   </section>
 </div>
@@ -506,24 +573,9 @@ def build_meditate():
 
 # ===================================================================== WATCH
 def build_watch():
-    vids = ""
-    for t in TALKS:
-        vids += f'''
-<article class="vid">
-  <div class="vframe" data-id="{t["id"]}" data-title="{esc(t["title"])}">
-    <button class="vplay" type="button" aria-label="Play {esc(t["title"])}">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="2"/><path d="M26 20l20 12-20 12z" fill="currentColor"/></svg>
-      <span>Play here</span>
-    </button>
-  </div>
-  <div class="vbody">
-    <h3>{esc(t["title"])}</h3>
-    <p class="muted small">{esc(t["who"])} · {t["min"]} min</p>
-    <p>{esc(t["note"])}</p>
-    <p class="small"><a href="https://www.youtube.com/watch?v={t["id"]}" target="_blank" rel="noopener">Watch on YouTube</a></p>
-  </div>
-</article>'''
-        SEARCH.append(dict(title=t["title"], type="Watch", summary=t["who"] + ". " + t["note"], tags=["talk", "video"], text="", url="/watch/"))
+    vids = "".join(vid_card(t) for t in TALKS)
+    breath = "".join(vid_card(t, ("breathing", "meditation")) for t in BREATH_VIDEOS + MEDITATION_VIDEOS)
+    teach = "".join(vid_card(t, ("teacher", "mystic")) for t in TEACHER_VIDEOS)
     longl = "".join('<li><a href="%s" target="_blank" rel="noopener"><b>%s</b></a><span>%s%s</span></li>' % (
         t["url"], esc(t["title"]), esc(t["who"]) + (" · %d min. " % t["min"] if t["min"] else ". "), esc(t["note"])) for t in LONG_TALKS)
     chans = "".join('<li><a href="%s" target="_blank" rel="noopener"><b>%s</b></a><span>%s</span></li>' % (
@@ -535,7 +587,12 @@ def build_watch():
   <p class="lede">A short, curated shelf. Videos load from YouTube only when you press play, using YouTube’s privacy-enhanced mode.</p>
 </div>
 <div class="wrap" style="padding-bottom:64px">
+  <h2>Talks to start with</h2>
   <div class="vgrid">{vids}</div>
+  <h2 style="margin-top:46px">Breathe and meditate along</h2>
+  <div class="vgrid">{breath}</div>
+  <h2 style="margin-top:46px">Teachers</h2>
+  <div class="vgrid">{teach}</div>
   <p class="note" style="margin-top:30px">Talks reflect their speakers’ views, and research keeps moving. Treat them as starting points, not final answers.</p>
   <h2 style="margin-top:46px">Longer listens</h2>
   <ul class="reslist">{longl}</ul>
@@ -547,19 +604,31 @@ def build_watch():
         body, section="Library", search=dict(title="Watch", type="Page", summary="Curated talks.", tags=[], text="")))
 
 # ===================================================================== READ
+def writer_card(w):
+    name, who, url, what = w
+    key = "w-" + re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")[:40]
+    SEARCH.append(dict(title=name, type="Writer", summary=who + ". " + what, tags=["writer", "substack"], text="", url="/read/"))
+    return ('<a class="card" href="%s" target="_blank" rel="noopener">%s<span class="kicker">%s</span><h3>%s</h3><p>%s</p>'
+            '<span class="meta">Read on Substack \u2197</span></a>') % (url, art_img(key, style="orbit"), esc(who), esc(name), esc(what))
+
 def build_read():
     books = "".join('<li><a href="%s" target="_blank" rel="noopener"><b>%s</b></a><span class="by">%s</span><span>%s</span></li>' % (
         b["url"], esc(b["title"]), esc(b["who"]), esc(b["note"])) for b in FREE_BOOKS)
     for b in FREE_BOOKS:
         SEARCH.append(dict(title=b["title"], type="Read", summary=b["who"] + ". " + b["note"], tags=["book", "free"], text="", url="/read/"))
     enc = "".join('<li><a href="%s" target="_blank" rel="noopener">%s</a></li>' % (e["url"], esc(e["title"])) for e in ENCYCLOPEDIA)
+    writers = "".join(writer_card(w) for w in WRITERS)
     body = f'''
 <div class="wrap page-head">
   <p class="kicker">Read</p>
-  <h1>Free classics</h1>
-  <p class="lede">Old books that still read like good advice. All free online. Read a page, not a chapter, and pick one line to try today.</p>
+  <h1>Writers and old books</h1>
+  <p class="lede">Living writers worth following, and old books that still read like good advice. Read a page, not a chapter, and pick one line to try today.</p>
 </div>
 <div class="wrap" style="padding-bottom:64px">
+  <h2 id="writers">Living writers</h2>
+  <p class="muted">Independent newsletters on Substack about feelings, rest, meaning, and practice. Free to read, with optional paid tiers.</p>
+  <div class="grid">{writers}</div>
+  <h2 id="classics" style="margin-top:46px">Free classics</h2>
   <ul class="reslist big-list">{books}</ul>
   <h2 style="margin-top:46px">Background reading</h2>
   <p class="muted">Encyclopedia articles for going deeper on the ideas behind this library.</p>
@@ -581,6 +650,10 @@ def build_shop():
                       f'<a class="btn" href="{amazon(q)}" target="_blank" rel="sponsored noopener">Find on Amazon</a></div>')
             SEARCH.append(dict(title=title, type="Shop", summary=by + ". " + why, tags=[name.lower()], text="", url="/shop/"))
         sections += f'<h2 style="margin-top:40px">{esc(name)}</h2><div class="grid">{cards}</div>'
+    acc = "".join(('<div class="card pcard"><h3>%s</h3><p class="muted small">%s</p><p>%s</p>'
+                    '<a class="btn" href="%s" target="_blank" rel="noopener">%s</a></div>') % (
+        esc(a["title"]), esc(a["who"]), esc(a["why"]), a["url"], esc(a["btn"])) for a in ACCOUNTABILITY)
+    sections += '<h2 style="margin-top:40px">Blocking and accountability</h2><div class="grid">%s</div>' % acc
     st = SOUNDS_TRUE
     sections += (f'<h2 style="margin-top:40px">Courses and audio</h2><div class="grid"><div class="card pcard"><h3>{esc(st["title"])}</h3>'
                  f'<p class="muted small">{esc(st["who"])}</p><p>{esc(st["why"])}</p>'
@@ -593,7 +666,7 @@ def build_shop():
   <p class="lede">The only page on this site that earns anything. Nothing here is required, and none of it will fix you. These are books and simple tools that people in this field tend to recommend.</p>
 </div>
 <div class="wrap" style="padding-bottom:64px">
-  <p class="note"><b>Disclosure.</b> Links on this page are affiliate links. If you buy through them, this site may earn a small commission at no extra cost to you. As an Amazon Associate I earn from qualifying purchases. Amazon links go to a search for the item, so check the edition and price before you buy.</p>
+  <p class="note"><b>Disclosure.</b> Amazon and Sounds True links on this page are affiliate links. If you buy through them, this site may earn a small commission at no extra cost to you. As an Amazon Associate I earn from qualifying purchases. Amazon links go to a search for the item, so check the edition and price before you buy.</p>
   <h2 style="margin-top:36px">Free first</h2>
   <ul class="reslist">{free}</ul>
   {sections}
@@ -720,11 +793,16 @@ def build_library():
         ("Breathe", "/breathe/", "A visual pacer for box breathing, cyclic sighing, and longer exhales."),
         ("Meditate", "/meditate/", "A silent timer, guided readings, and free guided audio."),
         ("Watch", "/watch/", "A short shelf of well-regarded talks."),
-        ("Read", "/read/", "Free classics on Stoicism, habit, and the power of thought."),
+        ("Read", "/read/", "Living writers on Substack, plus free classics on Stoicism and habit."),
         ("Mystics", "/mystics/", "Short passages and free texts from contemplatives."),
         ("Community", "/community/", "Subreddits and groups where others work on the same things."),
     ]
-    cards = "".join('<a class="card" href="%s"><h3>%s</h3><p>%s</p></a>' % (u, n, esc(d)) for n, u, d in items)
+    hub_style = {"Ideas": "ridges", "Practice": "bloom", "Breathe": "ripples", "Meditate": "ripples", "Watch": "waves",
+                 "Read": "orbit", "Mystics": "orbit", "Community": "bloom"}
+    hub_color = {"Ideas": "gold", "Practice": "sage", "Breathe": "teal", "Meditate": "violet", "Watch": "ember",
+                 "Read": "dusk", "Mystics": "violet", "Community": "gold"}
+    cards = "".join('<a class="card" href="%s">%s<h3>%s</h3><p>%s</p></a>' % (
+        u, art_img("hub-" + n.lower(), style=hub_style[n], color=hub_color[n]), n, esc(d)) for n, u, d in items)
     body = f"""
 <div class="wrap page-head">
   <p class="kicker">Library</p>
@@ -753,6 +831,9 @@ def build_mystics():
   <h2>Passages</h2>
   <p class="muted">Short quotations from public-domain translations, with their sources.</p>
   <div class="qgrid">{qc}</div>
+  <h2 style="margin-top:46px">Listen</h2>
+  <p class="muted">Full talks from teachers in the contemplative tradition.</p>
+  <div class="vgrid">{"".join(vid_card(v, ("teacher", "mystic")) for v in TEACHER_VIDEOS)}</div>
   <h2 style="margin-top:46px">Free texts to read</h2>
   <ul class="reslist">{texts}</ul>
   <h2 style="margin-top:46px">Meet the mystics</h2>

@@ -100,9 +100,10 @@
   /* video: load on click, privacy-enhanced */
   document.addEventListener('click', function (e) {
     var b = e.target.closest('.vplay'); if (!b) return;
-    var f = b.parentNode, id = f.getAttribute('data-id');
+    var f = b.parentNode, id = f.getAttribute('data-id'), list = f.getAttribute('data-list');
     var ifr = document.createElement('iframe');
-    ifr.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+    ifr.src = id ? 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0'
+                 : 'https://www.youtube-nocookie.com/embed/videoseries?list=' + list + '&autoplay=1&rel=0';
     ifr.title = f.getAttribute('data-title') || 'Video';
     ifr.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen';
     ifr.setAttribute('allowfullscreen', ''); ifr.referrerPolicy = 'strict-origin-when-cross-origin';
