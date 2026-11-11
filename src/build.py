@@ -13,11 +13,11 @@ PRACTICES = PRACTICES + NEW_PRACTICES
 PRODUCTS = [(n, items + EXTRA_BOOKS) if n == "Books" else (n, items) for n, items in PRODUCTS]
 
 BASE = "https://imfeelinglost.org"
-BUILD = "2026-11-08"
+BUILD = "2026-11-10"
 REVIEWED = "November 2026"
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(os.path.dirname(HERE), "site")
-V = "20261108b"
+V = "20261110"
 BRAND = "I’m Feeling Lost"
 
 IDX = {i["slug"]: i for i in IDEAS}

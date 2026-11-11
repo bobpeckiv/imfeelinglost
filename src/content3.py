@@ -53,6 +53,8 @@ TEACHER_VIDEOS = [
 EXTRA_BOOKS = [
  ("Breaking the Cycle", "George Collins with Andrew Adleman", "Breaking the Cycle George Collins",
   "A direct, shame-free guide to stepping out of compulsive porn use and fantasy, from a counselor who works with it."),
+ ("The Little Book of Ikigai", "Ken Mogi", "Little Book of Ikigai Ken Mogi",
+  "A Japanese neuroscientist on finding reasons to live in small, daily things. Sold in the United States as Awakening Your Ikigai."),
  ("Autobiography of a Yogi", "Paramahansa Yogananda", "Autobiography of a Yogi Yogananda",
   "The 1946 memoir that introduced millions of readers to meditation and the saints of India."),
  ("The Practice of Brahmacharya", "Swami Sivananda", "Practice of Brahmacharya Sivananda",

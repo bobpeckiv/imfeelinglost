@@ -157,6 +157,57 @@ NEW_IDEAS = [
     "Patanjali, Yoga Sutras 2.38 on brahmacharya (translations vary).",
 ],
 },
+{
+"slug": "ikigai",
+"title": "Ikigai",
+"tags": ["Meaning", "Tradition", "Start here"],
+"summary": "A Japanese word for what makes life feel worth living. It is smaller, kinder, and more useful than the famous four-circle diagram suggests.",
+"read": 5,
+"short": [
+    "Ikigai means what makes life worth living. It can be as small as a morning walk or a person you cook for.",
+    "The four-circle diagram is a Western purpose exercise from 2011 that had the word ikigai added in 2014.",
+    "You can have several, they change over a lifetime, and they do not have to earn money.",
+],
+"try": "small-reasons",
+"practices": ["small-reasons", "values-check", "one-small-thing"],
+"related": ["values", "feeling-lost", "connection", "low-mood-momentum"],
+"body": """
+<h2>What the word means</h2>
+<p>Ikigai (生きがい, said roughly "ee-kee-guy") is an everyday Japanese word. <em>Iki</em> is life or living. <em>Gai</em> is worth or value. Put together, it means what makes life feel worth living, or a reason to get up in the morning. People in Japan use it casually, about a garden, a grandchild, a craft, a team they follow, a cup of tea before the house wakes up. It does not have to be large, and it does not have to be your job.</p>
+<h2>The diagram is not ikigai</h2>
+<p>You have probably seen four overlapping circles: what you love, what you are good at, what the world needs, and what you can be paid for, with ikigai in the middle. That drawing began as a diagram about purpose by the Spanish author and astrologer Andrés Zuzunaga in 2011. In 2014 a British blogger, Marc Winn, swapped the word in the centre for "ikigai" after watching a talk on longevity, and the picture spread everywhere. Winn has said as much himself.</p>
+<p>The diagram can be a decent career exercise. As a picture of ikigai it sets a brutal bar. If your reason for living also has to be your talent, your service to the world, and your income, most people fail the test. That is the last thing you need when you already feel lost.</p>
+<h2>The thing and the feeling</h2>
+<p>The psychiatrist Mieko Kamiya wrote the classic Japanese study, <em>Ikigai ni Tsuite</em>, in 1966, drawing on years of work with patients at a leprosy sanatorium. She noticed that the word points at two things. One is the source: the person, activity, or hope that gives you a reason. The other is the feeling itself, which she called <em>ikigai-kan</em>, the sense that your life is worth living.</p>
+<p>The difference matters. A source can be lost. A job ends, children move out, a body stops doing what it used to. The feeling can be rebuilt from other sources, often smaller ones. Kamiya saw this in people who had lost nearly everything and still found a reason in a poem, a friendship, or work that helped someone else.</p>
+<h2>Small counts</h2>
+<p>The neuroscientist Ken Mogi describes ikigai as a spectrum that runs from tiny private pleasures to large public achievements, and says all of it counts. He offers five pillars: starting small, releasing yourself, harmony and sustainability, the joy of little things, and being in the here and now. None of them asks you to find a calling first.</p>
+<p>This fits what the rest of this library says. {idea:values|Values} are directions, not finish lines. Clarity tends to follow action. And when you are {idea:feeling-lost|lost}, "what is my purpose?" is usually too big a question to answer, while "what made yesterday a little better?" is not.</p>
+<h2>What the research says</h2>
+<p>In the Ohsaki study, researchers asked more than 43,000 Japanese adults aged 40 to 79 one question: "Do you have ikigai in your life?" Over the next seven years, the people who said no were about 50 percent more likely to die than the people who said yes, mostly from cardiovascular disease and external causes. That held after adjusting for age, health, and other factors.</p>
+<p>Read that with care. It is an observational study. People without ikigai were also more often unwell, in pain, unemployed, or alone, and no adjustment fully untangles that. The study shows a link, not a cause. Ikigai is also often credited for the long lives of Okinawans. That story is popular and it is disputed, and some researchers have questioned the age records behind well-known longevity hotspots. A sense that life is worth living is good for its own sake. It does not need to add years to be worth having.</p>
+<h2>Finding yours</h2>
+<p>Skip the circles. Try smaller questions.</p>
+<ul>
+<li>What do I look forward to, even a little, on an ordinary day?</li>
+<li>What do I lose track of time doing?</li>
+<li>Who is glad when I show up?</li>
+<li>What would I miss if it were gone next month?</li>
+<li>What did I love before I started judging whether it was useful?</li>
+</ul>
+<p>Whatever turns up, treat it as real. Then give it a little more room this week. The {practice:small-reasons|small reasons list} takes five minutes, and {practice:one-small-thing|one small thing} turns an answer into something you actually do.</p>
+<h2>If nothing comes up</h2>
+<p>A blank page is not a failure to find your ikigai. When nothing feels worth getting up for, and that has lasted for weeks, it is often a sign of depression, which is common and treatable. Start with {idea:low-mood-momentum|low mood and momentum}, tell one person, and see the <a href="/help/">help page</a> if it feels heavy. The reasons tend to come back as the fog lifts, and small actions help lift it.</p>
+""",
+"sources": [
+    "Mieko Kamiya, Ikigai ni Tsuite (On What Makes Life Worth Living), 1966. In Japanese.",
+    "Gordon Mathews, What Makes Life Worth Living? How Japanese and Americans Make Sense of Their Worlds (1996).",
+    "Sone et al., 'Sense of Life Worth Living (Ikigai) and Mortality in Japan: Ohsaki Study,' Psychosomatic Medicine 70(6), 2008.",
+    "Ken Mogi, The Little Book of Ikigai (2017), published in the United States as Awakening Your Ikigai.",
+    "Andrés Zuzunaga, 'Propósito' diagram (2011), and Marc Winn, 'What's Your Ikigai?' (2014).",
+    "Saul Justin Newman, 'Supercentenarian and remarkable age records exhibit patterns indicative of clerical errors and pension fraud,' bioRxiv preprint (2019).",
+],
+},
 ]
 
 NEW_PRACTICES = [
@@ -211,6 +262,24 @@ NEW_PRACTICES = [
 ],
 "why": "Urges are cue-driven and fade without action. Changing place and posture breaks the cue and gives the wave time to pass.",
 "ideas": ["urges", "porn-and-compulsive-use", "if-then"],
+},
+{
+"slug": "small-reasons",
+"title": "Small reasons list",
+"minutes": 5,
+"summary": "List the small things that make a day feel worth it, then make room for one of them.",
+"when": "When life feels flat or pointless, or the question of purpose feels too big to answer.",
+"steps": [
+    "Set a timer for five minutes. At the top of a page write: things that make a day worth it.",
+    "List anything, however small. The first coffee, a dog, a song, a person, fixing something, a show you look forward to. Do not judge whether it counts.",
+    "If the page stays empty, look back. What used to be on this list? Write those down too.",
+    "Circle one you could have a little more of this week.",
+    "Give it a time and a place tomorrow, and do it before you check how you feel.",
+    "Keep the list somewhere you will see it. Add a line whenever you notice a new one.",
+],
+"why": "Ikigai is the feeling that life is worth living, and it is usually built from small, ordinary sources, not one grand purpose. Naming them makes them easier to notice, and scheduling one turns noticing into action.",
+"source": "Mieko Kamiya, Ikigai ni Tsuite (1966). Ken Mogi, The Little Book of Ikigai (2017).",
+"ideas": ["ikigai", "values", "low-mood-momentum"],
 },
 ]
 
@@ -319,6 +388,7 @@ JOURNAL_PROMPTS = [
  "What is one thing I am avoiding, and what is the smallest first step?",
  "What did I feel just before my last urge or long scroll?",
  "What do I want my days to be for?",
+ "What small thing made today a little more worth it?",
  "Who is one person I could reach out to today?",
  "What went a little better than I expected this week?",
  "What am I tolerating that I could change?",
@@ -349,7 +419,7 @@ WHY_BODY = """
 <p>Living on purpose can sound like a luxury when you are depressed, scrolling, and stuck in habits you wish you did not have. Start much smaller. One tiny action. One glass of water. One walk around the block. Low mood is a human condition and a medical one, not a verdict on you. Read {idea:low-mood-momentum|low mood and momentum}, and if it has been heavy for weeks, reach out to a professional.</p>
 <h2>Three questions to begin</h2>
 <ol>
-<li><strong>What do I want my days to be for?</strong> A short {practice:values-check|values check} helps.</li>
+<li><strong>What do I want my days to be for?</strong> A short {practice:values-check|values check} helps, and so does the Japanese idea of {idea:ikigai|ikigai}.</li>
 <li><strong>What is draining me that I could shrink?</strong> Often it is {idea:doomscrolling|doomscrolling}, {idea:porn-and-compulsive-use|porn}, or another {idea:habits|habit} that eats the hours.</li>
 <li><strong>Who do I want around me?</strong> See {idea:connection|connection}.</li>
 </ol>

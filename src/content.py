@@ -19,14 +19,14 @@ IDEAS = [
 ],
 "try": "two-minute-start",
 "practices": ["values-check", "two-minute-start"],
-"related": ["values", "body-foundation", "connection"],
+"related": ["values", "ikigai", "body-foundation", "connection"],
 "body": """
 <h2>What it usually is</h2>
 <p>Feeling lost is rarely a defect in you. More often it is what it feels like when the story you were living in stops fitting and the next one has not formed yet. That story might be a job, a relationship, a belief, or a version of yourself. The writer William Bridges, who studied life transitions, described the stretch between an ending and a new beginning as a neutral zone. It is uncomfortable, and it is also where a lot of the real sorting-out happens.</p>
 <h2>Why waiting for clarity does not work</h2>
 <p>Most of us expect certainty to arrive first and action to follow. The research on career change points the other way. Herminia Ibarra, who studied people reinventing their working lives, found that they rarely planned their way into a new direction. They tried small experiments, met different people, and noticed what gave them energy. Clarity came after the trying.</p>
 <h2>Make the question smaller</h2>
-<p>"What is my purpose?" is too big to answer from a couch. Smaller questions can be answered this week. What is one thing I could try that I have not tried? What did I enjoy before I started judging it? Who do I admire that I could ask one question?</p>
+<p>"What is my purpose?" is too big to answer from a couch. Smaller questions can be answered this week. What is one thing I could try that I have not tried? What did I enjoy before I started judging it? Who do I admire that I could ask one question? The Japanese idea of {idea:ikigai|ikigai} is a good guide here. It treats small, everyday reasons as the real thing.</p>
 <h2>Three small moves</h2>
 <ol>
 <li><strong>Steady the basics.</strong> Sleep, food, movement, and one real conversation. They will not fix everything, but a tired and isolated mind gets lost faster. See {idea:body-foundation}.</li>
@@ -203,7 +203,7 @@ IDEAS = [
 ],
 "try": "values-check",
 "practices": ["values-check", "evening-review"],
-"related": ["feeling-lost", "discipline", "stoic-control"],
+"related": ["feeling-lost", "ikigai", "discipline", "stoic-control"],
 "body": """
 <h2>Direction versus destination</h2>
 <p>Acceptance and Commitment Therapy, developed by Steven Hayes and colleagues, separates values from goals. A goal can be finished: get the job, run the race, save the money. A value cannot be finished. "Be a loving parent," "make honest work," "stay curious" are directions you keep choosing. Russ Harris compares it to heading west. You can walk west forever and never arrive.</p>
@@ -770,6 +770,7 @@ ENCYCLOPEDIA = [
 {"url": "https://en.wikipedia.org/wiki/Implementation_intention", "title": "Implementation intention"},
 {"url": "https://en.wikipedia.org/wiki/Self-compassion", "title": "Self-compassion"},
 {"url": "https://en.wikipedia.org/wiki/Procrastination", "title": "Procrastination"},
+{"url": "https://en.wikipedia.org/wiki/Ikigai", "title": "Ikigai"},
 ]
 
 # ---------------------------------------------------------------- MEDITATE (external audio)
